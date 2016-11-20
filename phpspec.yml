@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: pjLaravel
+        psr4_prefix: pjLaravel
+        src_path: app

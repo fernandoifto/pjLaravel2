@@ -1,0 +1,40 @@
+
+#cria projeto laravel
+composer create-project --prefer-dist laravel/laravel pjLaravel
+
+#criar projeto laravel na versão 5.1
+composer create-project --prefer-dist laravel/laravel nome-do-projeto 5.1.*
+
+#roda projeto
+php artisan serve
+
+#gerar chave de segurança do projeto: APP_KEY
+php artisan key:generate
+
+#alterar o namespace do projeto
+php artisan app:name pjLaravel
+
+#gera o model e a migration de Client
+php artisan make:model Client -m
+
+#gera migrate
+php artisan migrate
+
+#rodar a seed
+php artisan db:seed
+
+#criar uma seed
+php artisan make:seeder ClientTableSeeder
+
+#cria um controller ClientController
+php artisan make:controller ClientController
+
+#baixa o instala o sistema de repositorios  https://github.com/andersao/l5-repository
+composer require prettus/l5-repository
+
+#cria os arquivos de repositorio
+php artisan vendor:publish
+
+#cria um provider
+php artisan make:provider pjLaravelRepositoryProvider
+
