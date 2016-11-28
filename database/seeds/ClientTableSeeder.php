@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use pjLaravel\Entities\Client;
 
 class ClientTableSeeder extends Seeder
 {
@@ -14,6 +15,6 @@ class ClientTableSeeder extends Seeder
         //
         \pjLaravel\Client::truncate();
         
-        factory(\pjLaravel\Client::class, 5)->create();
+        factory(Client::class, 5)->create();
     }
 }

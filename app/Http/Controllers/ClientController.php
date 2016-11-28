@@ -3,21 +3,30 @@
 namespace pjLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use pjLaravel\Http\Requests;
-use pjLaravel\Http\Controllers\Controller;
-use pjLaravel\Client;
+use pjLaravel\Repositories\ClientRepository;
 
 class ClientController extends Controller
 {
     /**
+     *
+     * @var ClientRepository
+     */
+    
+    private $repository;
+    
+    public function __construct(ClientRepository $repository) {
+        $this->repository = $repository;
+    }
+
+        /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return Client::all();
+        //return Client::all();
+        return $this->repository->all();
     }
 
     /**
@@ -38,7 +47,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return Client::create($request->all());
+        return $this->repository->create($request->all());
+        //return Client::create($request->all());
     }
 
     /**
@@ -49,7 +59,8 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return Client::find($id);
+        return $this->repository->find($id);
+        //return Client::find($id);
     }
 
     /**
@@ -72,9 +83,11 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Client::find($id);
+        /*$client = Client::find($id);
         $client->update($request->all(),$id);
-        return $client;
+        return $client;*/
+        //return $this->service->update($request->all(), $id);
+        return $this->repository->update($request->all(), $id);
     }
 
     /**
@@ -85,6 +98,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        Client::find($id)->delete();
+        //Client::find($id)->delete();
+        $this->repository->find($id)->delete();
     }
 }

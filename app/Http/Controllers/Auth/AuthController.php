@@ -2,7 +2,7 @@
 
 namespace pjLaravel\Http\Controllers\Auth;
 
-use pjLaravel\User;
+use pjLaravel\Entities\User;
 use Validator;
 use pjLaravel\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
