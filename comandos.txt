@@ -38,6 +38,3 @@ php artisan vendor:publish
 #cria um provider
 php artisan make:provider pjLaravelRepositoryProvider
 
-
-Teste
-
