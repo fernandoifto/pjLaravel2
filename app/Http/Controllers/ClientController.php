@@ -4,18 +4,22 @@ namespace pjLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
 use pjLaravel\Repositories\ClientRepository;
+use pjLaravel\Services\ClientService;
 
 class ClientController extends Controller
-{
-    /**
-     *
-     * @var ClientRepository
-     */
-    
+{   
     private $repository;
-    
-    public function __construct(ClientRepository $repository) {
+    private $service;
+            
+    /**
+     * 
+     * @param ClientRepository $repository
+     * @param ClientService $service
+     */
+     
+    public function __construct(ClientRepository $repository, ClientService $service) {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
         /**
@@ -47,7 +51,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->repository->create($request->all());
+        return $this->service->create($request->all());
+        //return $this->repository->create($request->all());
         //return Client::create($request->all());
     }
 
@@ -86,8 +91,8 @@ class ClientController extends Controller
         /*$client = Client::find($id);
         $client->update($request->all(),$id);
         return $client;*/
-        //return $this->service->update($request->all(), $id);
-        return $this->repository->update($request->all(), $id);
+        //return $this->repository->update($request->all(), $id);
+        return $this->service->update($request->all(), $id);
     }
 
     /**
