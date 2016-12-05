@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ClientTableSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,8 +12,8 @@ class ClientTableSeeder extends Seeder
     public function run()
     {
         //
-        //Client::truncate();
+        //Project::truncate();
 
-        factory(\pjLaravel\Entities\Client::class, 5)->create();
+        factory(\pjLaravel\Entities\User::class, 5)->create();
     }
 }

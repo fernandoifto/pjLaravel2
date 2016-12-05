@@ -38,4 +38,16 @@ php artisan vendor:publish
 #cria um provider
 php artisan make:provider pjLaravelRepositoryProvider
 
+#cria uma entities
+php artisan make:entity Project
 
+#cria migration project
+php artisan make:migration create_project_tables --create=projects
+
+#limpa o projeto e atualiza as classes
+php artisan clear-compiled
+composer dump-autoload
+php artisan optimize
+
+#recria as migration e roda as seeds
+php artisan migrate:refresh --seed

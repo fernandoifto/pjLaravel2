@@ -4,7 +4,7 @@ namespace pjLaravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class pjLaravelRepositoryProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -23,9 +23,8 @@ class pjLaravelRepositoryProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-                \pjLaravel\Repositories\ClientRepository::class,
-                \pjLaravel\Repositories\ClientRepositoryEloquent::class
-        );
+        $this->app->bind(\pjLaravel\Repositories\ClientRepository::class, \pjLaravel\Repositories\ClientRepositoryEloquent::class);
+        $this->app->bind(\pjLaravel\Repositories\ProjectRepository::class, \pjLaravel\Repositories\ProjectRepositoryEloquent::class);
+        //:end-bindings:
     }
 }
