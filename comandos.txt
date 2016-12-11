@@ -51,3 +51,9 @@ php artisan optimize
 
 #recria as migration e roda as seeds
 php artisan migrate:refresh --seed
+
+#instala a lib oauth2
+composer update lucadegasperi/oauth2-server-laravel
+
+#cria um middleware
+php artisan make:middleware CheckProjectOwner

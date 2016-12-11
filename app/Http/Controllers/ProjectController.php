@@ -6,31 +6,30 @@ use Illuminate\Http\Request;
 use pjLaravel\Repositories\ProjectRepository;
 use pjLaravel\Services\ProjectService;
 
-class ProjectController extends Controller
-{   
+class ProjectController extends Controller {
+
     private $repository;
     private $service;
-            
+
     /**
      * 
      * @param ProjectRepository $repository
      * @param ProjectService $service
      */
-     
     public function __construct(ProjectRepository $repository, ProjectService $service) {
         $this->repository = $repository;
         $this->service = $service;
     }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //return Project::all();
-        return $this->repository->all();
+
+        return $this->repository->findWhere(['owner_id' => \Authorizer::getResourceOwnerId()]);
     }
 
     /**
@@ -38,8 +37,7 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -49,8 +47,7 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         return $this->service->create($request->all());
         //return $this->repository->create($request->all());
         //return Project::create($request->all());
@@ -62,8 +59,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
+        if ($this->checkProjectPermissions($id) == false) {
+            return ['error' => 'Acess Forbidden'];
+        }
         return $this->repository->find($id);
         //return Project::find($id);
     }
@@ -74,8 +73,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -86,12 +84,14 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        /*$client = Project::find($id);
-        $client->update($request->all(),$id);
-        return $client;*/
+    public function update(Request $request, $id) {
+        /* $client = Project::find($id);
+          $client->update($request->all(),$id);
+          return $client; */
         //return $this->repository->update($request->all(), $id);
+        if ($this->checkProjectOwner($id) == false) {
+            return ['error' => 'Acess Forbidden'];
+        }
         return $this->service->update($request->all(), $id);
     }
 
@@ -101,9 +101,34 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //Project::find($id)->delete();
+        if ($this->checkProjectOwner($id) == false) {
+            return ['error' => 'Acess Forbidden'];
+        }
         $this->repository->find($id)->delete();
     }
+
+    private function checkProjectOwner($projectId) {
+
+        $userId = \Authorizer::getResourceOwnerId();
+
+        return $this->repository->isOwner($projectId, $userId);
+    }
+
+    private function checkProjectMember($projectId) {
+
+        $userId = \Authorizer::getResourceOwnerId();
+
+        return $this->repository->hasMember($projectId, $userId);
+    }
+
+    private function checkProjectPermissions($projectId) {
+
+        if ($this->checkProjectMember($projectId) || $this->checkProjectOwner($projectId)) {
+            return true;
+        }
+        return false;
+    }
+
 }

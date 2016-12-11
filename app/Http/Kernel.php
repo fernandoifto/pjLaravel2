@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware::class,
         //\pjLaravel\Http\Middleware\VerifyCsrfToken::class,
     ];
 
@@ -30,5 +31,13 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \pjLaravel\Http\Middleware\RedirectIfAuthenticated::class,
         'csrf' => \pjLaravel\Http\Middleware\VerifyCsrfToken::class,
+        
+        
+        'oauth' => \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class,
+        'oauth-owner' => \LucaDegasperi\OAuth2Server\Middleware\OAuthOwnerMiddleware::class,
+        'check-authorization-params' => \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class,
+        
+        'CheckProjectOwner' => \pjLaravel\Http\Middleware\CheckProjectOwner::class,
     ];
+        
 }
