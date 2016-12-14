@@ -7,6 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use pjLaravel\Repositories\ProjectRepository;
 use pjLaravel\Entities\Project;
 use pjLaravel\Validators\ProjectValidator;
+use pjLaravel\Presenters\ProjectPresenter;
 
 /**
  * Class ProjectRepositoryEloquent
@@ -24,8 +25,6 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
         return Project::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -42,18 +41,21 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
         return false;
     }
     
-    public function hasMember($projectId, $memberId){
-        
+    public function hasMember($projectId, $memberId)
+    {
         $project = $this->find($projectId);
-        
-        foreach ($project->members as $member){
-            if($member->id == $memberId){
+        foreach($project->members as $member)
+        {
+            if ($member->id == $memberId)
+            {
                 return true;
             }
         }
-        
         return false;
-        
+    }
+    
+    public function presenter() {
+        return ProjectPresenter::class;       
     }
     
 }

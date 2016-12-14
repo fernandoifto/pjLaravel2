@@ -57,3 +57,6 @@ composer update lucadegasperi/oauth2-server-laravel
 
 #cria um middleware
 php artisan make:middleware CheckProjectOwner
+
+#instala a lib fractal para criar transformers e presenters
+composer require league/fractal
