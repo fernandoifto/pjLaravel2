@@ -5,6 +5,10 @@ namespace pjLaravel\Http\Controllers;
 use Illuminate\Http\Request;
 use pjLaravel\Repositories\ClientRepository;
 use pjLaravel\Services\ClientService;
+use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException,
+    \Illuminate\Database\Eloquent\ModelNotFoundException,
+    Illuminate\Database\QueryException,
+    Exception;
 
 class ClientController extends Controller
 {   
@@ -22,88 +26,53 @@ class ClientController extends Controller
         $this->service = $service;
     }
 
-        /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //return Client::all();
         return $this->repository->all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
-        //return $this->repository->create($request->all());
-        //return Client::create($request->all());
+        $this->service->create($request->all());
+        return ['success'=>true, 'Cliente inserido com sucesso!'];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        return $this->repository->find($id);
-        //return Client::find($id);
+        try{
+            return $this->repository->find($id);
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'Cliente inexistente'];
+        } catch (NotFoundHttpException $e) {
+            return ['error' => true, 'Cliente inexistente'];
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        /*$client = Client::find($id);
-        $client->update($request->all(),$id);
-        return $client;*/
-        //return $this->repository->update($request->all(), $id);
-        return $this->service->update($request->all(), $id);
+        try{
+            return $this->service->update($request->all(), $id);
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'Cliente inexistente'];
+        } catch (NotFoundHttpException $e) {
+            return ['error' => true, 'Url inexistente'];
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //Client::find($id)->delete();
-        $this->repository->find($id)->delete();
+        try{
+            $this->repository->find($id)->delete();
+            return ['success'=>true, 'Cliente excluido com sucesso!'];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'Cliente inexistente'];
+        } catch (NotFoundHttpException $e) {
+            return ['error' => true, 'Url inexistente'];
+        } catch (QueryException $e) {
+            return ['error'=>true, 'Cliente não pode ser apagado pois existe projeto vinculado.'];
+        } catch (\Exception $e) {
+            return ['error'=>true, 'Ocorreu algum erro ao excluir o cliente.'];
+        }
+        
     }
 }
