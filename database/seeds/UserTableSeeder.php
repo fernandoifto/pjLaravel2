@@ -14,12 +14,12 @@ class UserTableSeeder extends Seeder
         //
         //Project::truncate();
         
-       /* factory(\pjLaravel\Entities\User::class)->create([
+       factory(\pjLaravel\Entities\User::class)->create([
             'name' => 'Fernando de Souza Arantes',
             'email' => 'fernando.arantes@ifto.edu.br',
             'password' => bcrypt('buchin26'),
             'remember_token' => str_random(10),
-        ]);*/
+        ]);
         
         factory(\pjLaravel\Entities\User::class, 5)->create();
     }
