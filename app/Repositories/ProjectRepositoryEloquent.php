@@ -41,6 +41,7 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
         return false;
     }
     
+    
     public function hasMember($projectId, $memberId)
     {
         $project = $this->skipPresenter()->find($projectId);

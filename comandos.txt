@@ -60,3 +60,5 @@ php artisan make:middleware CheckProjectOwner
 
 #instala a lib fractal para criar transformers e presenters
 composer require league/fractal
+
+
