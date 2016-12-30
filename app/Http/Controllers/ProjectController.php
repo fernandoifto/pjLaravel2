@@ -78,6 +78,30 @@ class ProjectController extends Controller {
             return ['error'=>true, 'Ocorreu algum erro ao excluir o projeto.'];
         }
     }
+    
+    public function addMember($project_id, $member_id){
+        try {
+            return $this->service->addMember($project_id, $member_id);
+        } catch (ModelNotFoundException $e) {
+            return $this->erroMsgm('Projeto inexistente.');
+        } catch (QueryException $e) {
+            return ['error'=>true, 'Ocorreu algum erro.'];
+        } catch (\Exception $e) {
+            return ['error'=>true, 'Ocorreu algum erro ao inserir.'];
+        }
+    }
+
+    public function removeMember($project_id, $member_id){
+        try {
+            return $this->service->removeMember($project_id, $member_id);
+        } catch (ModelNotFoundException $e) {
+            return $this->erroMsgm('Projeto inexistente.');
+        } catch (QueryException $e) {
+            return ['error'=>true, 'Ocorreu algum erro.'];
+        } catch (\Exception $e) {
+            return ['error'=>true, 'Ocorreu algum erro ao deletar.'];
+        }
+    }
 
     private function checkProjectOwner($projectId) {
 
