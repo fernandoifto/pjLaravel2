@@ -79,11 +79,31 @@ class ProjectController extends Controller {
         }
     }
     
+      public function members($id){
+        try {
+
+            $members = $this->repository->find($id)->members()->get();
+
+            if (count($members)) {
+                return $members;
+            }
+            return ['error'=>true, 'Projeto não tem membros.'];
+
+        } catch (ModelNotFoundException $e) {
+            return ['error'=>true, 'Projeto inexistente.'];
+        } catch (QueryException $e) {
+            return ['error'=>true, 'Ocorreu algum erro.'];
+        } catch (\Exception $e) {
+            return ['error'=>true, 'Ocorreu algum erro ao mostrar os membros.'];
+        }
+
+    }
+    
     public function addMember($project_id, $member_id){
         try {
             return $this->service->addMember($project_id, $member_id);
         } catch (ModelNotFoundException $e) {
-            return $this->erroMsgm('Projeto inexistente.');
+            return ['error'=>true, 'Projeto inexistente.'];
         } catch (QueryException $e) {
             return ['error'=>true, 'Ocorreu algum erro.'];
         } catch (\Exception $e) {
@@ -95,7 +115,7 @@ class ProjectController extends Controller {
         try {
             return $this->service->removeMember($project_id, $member_id);
         } catch (ModelNotFoundException $e) {
-            return $this->erroMsgm('Projeto inexistente.');
+            return ['error'=>true, 'Projeto inexistente.'];
         } catch (QueryException $e) {
             return ['error'=>true, 'Ocorreu algum erro.'];
         } catch (\Exception $e) {
